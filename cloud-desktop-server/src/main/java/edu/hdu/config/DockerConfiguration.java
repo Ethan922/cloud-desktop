@@ -28,8 +28,8 @@ public class DockerConfiguration {
     @Bean("dockerClient")
     public DockerClient connectDocker(DockerProperties dockerProperties) {
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerTlsVerify(false)
-//                .withDockerCertPath("E:\\idea_workspace\\web_project\\cloud-desktop\\cloud-desktop-server\\src\\main\\java\\edu\\hdu\\ca")
+                .withDockerTlsVerify(true)
+                .withDockerCertPath("src\\main\\java\\edu\\hdu\\ca")
                 // dokcer宿主机的ip,端口号
                 .withDockerHost(dockerProperties.getHost())
                 // docker API版本号
