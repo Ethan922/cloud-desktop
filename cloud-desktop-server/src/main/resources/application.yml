@@ -1,0 +1,51 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    druid:
+      driver-class-name: ${hdu.datasource.driver-class-name}
+      url: jdbc:mysql://${hdu.datasource.host}:${hdu.datasource.port}/${hdu.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${hdu.datasource.username}
+      password: ${hdu.datasource.password}
+  redis:
+    host: ${hdu.redis.host}
+    port: ${hdu.redis.port}
+    database: ${hdu.redis.database}
+    password: ${hdu.redis.password}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: edu.hdu.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    edu:
+      hdu:
+        mapper: debug
+        service: info
+        controller: info
+
+jwt:
+   # 设置jwt签名加密时使用的秘钥
+  secret-key: abcde
+  # 设置jwt过期时间
+  ttl: 720000000
+  # 设置前端传递过来的令牌名称
+  token-name: token
+
+docker:
+  host: tcp://192.168.110.142:2375
+  api-version: 1.43
+  registry-url: https://index.docker.io/v1/
+  max-connections: 100
+
+
