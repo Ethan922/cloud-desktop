@@ -82,18 +82,18 @@
 ## 镜像表 - image
 4.image
 
-| 字段名         | 数据类型         | 说明     | 备注   |
-|:------------|--------------|--------|------|
-| id          | bigint       | 主键     | 自增   |
-| image_id    | varchar(60)  | 镜像id   | 唯一   |
-| name        | varchar(50)  | 镜像名    |      |
-| image       | varchar(255) | 镜像图片   |      |
-| tag         | varchar(20)  | 镜像标签   |      |
-| size        | varcahr(10)  | 镜像大小   |      |
-| create_time | datetime     | 镜像创建时间 |      |
-| delete_time | datetime     | 镜像删除时间 |      |
-| is_active   | boolean      | 镜像是否启用 |      |
-| owner_id    | bigint       | 所有者ID  | 逻辑外键 |
+| 字段名         | 数据类型         | 说明     | 备注      |
+|:------------|--------------|--------|---------|
+| id          | bigint       | 主键     | 自增      |
+| image_id    | varchar(60)  | 镜像id   | 唯一      |
+| name        | varchar(50)  | 镜像名    |         |
+| image       | varchar(255) | 镜像图片   |         |
+| tag         | varchar(20)  | 镜像标签   |         |
+| size        | varcahr(10)  | 镜像大小   |         |
+| create_time | datetime     | 镜像创建时间 |         |
+| delete_time | datetime     | 镜像删除时间 |         |
+| is_active   | boolean      | 镜像是否启用 | 默认为true |
+| owner_id    | bigint       | 所有者ID  | 逻辑外键    |
 
 
 ## 容器表 - container
@@ -105,10 +105,10 @@
 | container_id     | varchar(60)  | 容器id     | 唯一              |
 | host_port        | bigint       | 主机端口映射   | 用于VNC服务访问，非空    |
 | image_id         | bigint       | 镜像id     | 逻辑外键            |
-| name             | varcahr(30)  | 容器名      |                 |
+| name             | varchar(30)  | 容器名      |                 |
 | image            | varchar(255) | 容器图片     |                 |
 | create_time      | datetime     | 容器创建时间   |                 |
 | owner_id         | bigint       | 所有人id    | 逻辑外键            |
 | delete_time      | datetime     | 容器删除时间   |                 |
-| is_active        | boolean      | 容器是否启用   |                 |
+| is_active        | boolean      | 容器是否启用   | 默认为true         |
 | status           | int          | 容器状态     | 1 启动 0 关闭 -1 销毁 |
