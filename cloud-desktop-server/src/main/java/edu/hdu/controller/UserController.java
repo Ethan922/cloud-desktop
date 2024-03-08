@@ -2,6 +2,7 @@ package edu.hdu.controller;
 
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.dto.UserLoginDTO;
+import edu.hdu.exception.PasswordErrorException;
 import edu.hdu.properties.JwtProperties;
 import edu.hdu.result.Result;
 import edu.hdu.utils.JwtUtil;
@@ -37,7 +38,8 @@ public class UserController {
                     claims);
             return Result.success(token);
         }
-        return Result.error("用户名或密码错误");
+        throw new PasswordErrorException("test");
+//        return Result.error("用户名或密码错误");
     }
 
 }

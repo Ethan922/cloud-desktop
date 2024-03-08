@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class DockerConfiguration {
     public DockerClient connectDocker(DockerProperties dockerProperties) {
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerTlsVerify(true)
-                .withDockerCertPath("src\\main\\java\\edu\\hdu\\ca")
+                .withDockerCertPath("E:\\idea_workspace\\web_project\\cloud-desktop\\cloud-desktop-server\\src\\main\\resources\\ca")
                 // dokcer宿主机的ip,端口号
                 .withDockerHost(dockerProperties.getHost())
                 // docker API版本号

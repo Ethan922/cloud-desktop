@@ -35,14 +35,4 @@ public class DockerClientTest {
         }
     }
 
-
-
-//    @Test
-//    public void test2(){
-//        Integer port;
-//        for (int i=0;i<10;i++) {
-//            port = pool.acquirePort();
-//            System.out.println(port);
-//        }
-//    }
 }
