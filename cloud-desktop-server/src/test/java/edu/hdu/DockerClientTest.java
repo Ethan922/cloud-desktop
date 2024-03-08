@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.util.List;
 
 @SpringBootTest
@@ -24,15 +25,22 @@ public class DockerClientTest {
 
     @Test
     public void test1() {
-        for (int i=0;i<2;i++) {
-            Integer hostPort = portPool.acquirePort();
-            CreateContainerResponse containerResponse = dockerClient.createContainerCmd("kylin-2203:1.1")
-                    .withHostConfig(new HostConfig()
-                            .withPortBindings(PortBinding.parse(hostPort + ":8444")))
-                    .withTty(true)
-                    .exec();
-            dockerClient.startContainerCmd(containerResponse.getId()).exec();
-        }
+//        for (int i=0;i<2;i++) {
+//            Integer hostPort = portPool.acquirePort();
+//            CreateContainerResponse containerResponse = dockerClient.createContainerCmd("kylin-2203:1.1")
+//                    .withHostConfig(new HostConfig()
+//                            .withPortBindings(PortBinding.parse(hostPort + ":8444")))
+//                    .withTty(true)
+//                    .exec();
+//            dockerClient.startContainerCmd(containerResponse.getId()).exec();
+//        }
+        System.out.println(this.getClass()
+                .getClassLoader()
+                .getResource("ca")
+                .getPath()
+                        .substring(1)
+                .replace('/', File.separator.charAt(0))
+        );
     }
 
 }

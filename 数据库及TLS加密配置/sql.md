@@ -66,7 +66,7 @@
 | ----------- | ----------- | ------ | ------------- |
 | id          | bigint      | 主键   | 自增          |
 | name        | varchar(32) | 角色名 | 唯一          |
-| permissions | bigint      | 权限   | 例如：1 管理员权限，2 用户权限 |
+| permissions | int      | 权限   | 例如：1 管理员权限，2 用户权限 |
 
 ## 用户角色表 - user_roles
 3.user_roles
@@ -101,12 +101,11 @@
 | id               | bigint       | id       | 自增              |
 | container_id     | varchar(60)  | 容器id     | 唯一              |
 | host_port        | bigint       | 主机端口映射   | 用于VNC服务访问，非空    |
-| image_id         | varchar(12)  | 镜像id     | 逻辑外键            |
+| image_id         | bigint       | 镜像id     | 逻辑外键            |
 | name             | varcahr(30)  | 容器名      |                 |
 | image            | varchar(255) | 容器图片     |                 |
 | create_time      | datetime     | 容器创建时间   |                 |
 | owner_id         | bigint       | 所有人id    | 逻辑外键            |
-| last_access_time | datetime     | 容器最后访问时间 |                 |
 | delete_time      | datetime     | 容器删除时间   |                 |
 | is_active        | boolean      | 容器是否启用   |                 |
 | status           | int          | 容器状态     | 1 启动 0 关闭 -1 销毁 |

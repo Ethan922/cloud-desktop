@@ -21,9 +21,9 @@ public class User {
 
     private String email;
 
-    //用户权限 1-管理员 0-普通用户
-    private Integer permission;
+    private String phone;
 
     private LocalDateTime createTime;
 
+    private LocalDateTime deleteTime;
 }

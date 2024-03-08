@@ -8,7 +8,7 @@ spring:
     allow-circular-references: true
   datasource:
     druid:
-      driver-class-name: ${hdu.datasource.driver-class-name}
+      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://${hdu.datasource.host}:${hdu.datasource.port}/${hdu.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${hdu.datasource.username}
       password: ${hdu.datasource.password}
