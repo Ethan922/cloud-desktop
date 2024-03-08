@@ -19,10 +19,11 @@ public class User {
 
     private String password;
 
+    private String email;
+
     //用户权限 1-管理员 0-普通用户
     private Integer permission;
 
     private LocalDateTime createTime;
 
-    private LocalDateTime updateTime;
 }
