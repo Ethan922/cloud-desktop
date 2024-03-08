@@ -28,9 +28,15 @@ public class DockerConfiguration {
     @ConditionalOnMissingBean
     @Bean("dockerClient")
     public DockerClient connectDocker(DockerProperties dockerProperties) {
+        String certPath=this.getClass()
+                .getClassLoader()
+                .getResource("ca")
+                .getPath()
+                .substring(1)
+                .replace('/', File.separator.charAt(0));
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerTlsVerify(true)
-                .withDockerCertPath("E:\\idea_workspace\\web_project\\cloud-desktop\\cloud-desktop-server\\src\\main\\resources\\ca")
+                .withDockerCertPath(certPath)
                 // dokcer宿主机的ip,端口号
                 .withDockerHost(dockerProperties.getHost())
                 // docker API版本号
