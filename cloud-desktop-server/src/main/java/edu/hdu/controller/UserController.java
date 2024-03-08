@@ -2,9 +2,11 @@ package edu.hdu.controller;
 
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.dto.UserLoginDTO;
+import edu.hdu.entity.User;
 import edu.hdu.exception.PasswordErrorException;
 import edu.hdu.properties.JwtProperties;
 import edu.hdu.result.Result;
+import edu.hdu.service.UserService;
 import edu.hdu.utils.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,11 +25,14 @@ public class UserController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    // TODO: 2024/2/26 登录
     public Result<String> login(@RequestBody UserLoginDTO userLoginDTO){
         log.info("用户登录...");
+        User user=userService.login(userLoginDTO);
         if (userLoginDTO.getUsername().equals("admin")&&userLoginDTO.getPassword().equals("123456")){
             //登录成功后，生成jwt令牌
             Map<String, Object> claims = new HashMap<>();
