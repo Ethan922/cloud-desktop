@@ -71,10 +71,13 @@
 ## 用户角色表 - user_roles
 3.user_roles
 
-| 字段名  | 数据类型 | 说明     | 备注     |
-| ------- | -------- | -------- | -------- |
-| user_id | bigint   | 用户ID   | 逻辑外键 |
-| role_id | bigint   | 角色ID   | 逻辑外键 |
+| 字段名     | 数据类型 | 说明   | 备注                   |
+|---------| -------- |------|----------------------|
+| id      | bigint   | 主键   | 自增                   |
+| user_id | bigint   | 用户ID | 逻辑外键                 |
+| role_id | bigint   | 角色ID | 逻辑外键                 |
+| name        | varchar(32) | 角色名 | 冗余字段                 |
+| permissions | int      | 权限   | 1 管理员权限，2 用户权限（冗余字段） |
 
 ## 镜像表 - image
 4.image
