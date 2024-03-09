@@ -39,8 +39,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("注册自定义拦截器...");
         registry.addInterceptor(jwtTokenInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/user/login");
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/login","/doc.html");
     }
 
     /**

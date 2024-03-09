@@ -11,8 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRoles {
 
+    private Long id;
+
     private Long userId;
 
     private Long roleId;
+
+    private String name;
+
+    private Integer permissions;
 
 }

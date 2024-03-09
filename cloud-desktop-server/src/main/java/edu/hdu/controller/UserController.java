@@ -8,6 +8,7 @@ import edu.hdu.properties.JwtProperties;
 import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
 import edu.hdu.utils.JwtUtil;
+import edu.hdu.vo.UserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,31 +21,19 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/user")
-@Api("用户相关接口")
+@Api(tags = "用户相关接口")
 public class UserController {
-    @Autowired
-    private JwtProperties jwtProperties;
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public Result<String> login(@RequestBody UserLoginDTO userLoginDTO){
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户登录...");
-        User user=userService.login(userLoginDTO);
-        if (userLoginDTO.getUsername().equals("admin")&&userLoginDTO.getPassword().equals("123456")){
-            //登录成功后，生成jwt令牌
-            Map<String, Object> claims = new HashMap<>();
-            claims.put(JwtClaimsConstant.USER_ID, 1);
-            String token = JwtUtil.createJWT(
-                    jwtProperties.getSecretKey(),
-                    jwtProperties.getTtl(),
-                    claims);
-            return Result.success(token);
-        }
-        throw new PasswordErrorException("test");
-//        return Result.error("用户名或密码错误");
+        UserLoginVO userLoginVO = userService.login(userLoginDTO);
+        log.info("登录成功！");
+        return Result.success(userLoginVO);
     }
 
 }
