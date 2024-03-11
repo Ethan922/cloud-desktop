@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.mapper.UserMapper">
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user (username, email, phone, password, create_time, delete_time)
+        values (#{username},#{email},#{phone},#{password},#{createTime},#{deleteTime})
+    </insert>
+</mapper>

@@ -37,4 +37,12 @@ public class UserController {
         return Result.success(userLoginVO);
     }
 
+    @PostMapping("/signup")
+    @ApiOperation("用户注册")
+    public Result<UserSignupVO> signup(@RequestBody UserSignupDTO userSignupDTO) {
+        log.info("用户注册");
+        UserSignupVO userSignupVO = userService.signup(userSignupDTO);
+        return Result.success(userSignupVO);
+    }
+
 }
