@@ -2,6 +2,7 @@ package edu.hdu.controller;
 
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.dto.UserLoginDTO;
+import edu.hdu.dto.UserSignupDTO;
 import edu.hdu.entity.User;
 import edu.hdu.exception.PasswordErrorException;
 import edu.hdu.properties.JwtProperties;
@@ -9,6 +10,7 @@ import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
 import edu.hdu.utils.JwtUtil;
 import edu.hdu.vo.UserLoginVO;
+import edu.hdu.vo.UserSignupVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,6 @@ public class UserController {
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户登录...");
         UserLoginVO userLoginVO = userService.login(userLoginDTO);
-        log.info("登录成功！");
         return Result.success(userLoginVO);
     }
 

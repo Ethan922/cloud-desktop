@@ -8,12 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("用户登录成功后返回的数据模型")
-public class UserLoginVO {
+public class UserLoginVO implements Serializable {
 
     @ApiModelProperty("用户ID")
     private Long id;

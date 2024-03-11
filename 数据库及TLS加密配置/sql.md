@@ -2,15 +2,16 @@
 ## 用户表 - user
 1.user
 
-| 字段名      | 数据类型    | 说明   | 备注        |
-| ----------- | ----------- | ------ |-----------|
-| id          | bigint      | 主键   | 自增        |
-| username    | varchar(32) | 用户名 | 唯一        |
-| email       | varchar(64) | 邮箱   |           |
-| password    | varchar(64) | 密码   | 哈希值 md5加密 |
-| phone       | varchar(11) | 手机号 |           |
-| create_time | datetime    | 创建时间 |           |
-| delete_time | datetime    | 删除时间 |           |
+| 字段名         | 数据类型        | 说明     | 备注        |
+|-------------|-------------|--------|-----------|
+| id          | bigint      | 主键     | 自增        |
+| username    | varchar(32) | 用户名    | 唯一        |
+| email       | varchar(64) | 邮箱     |           |
+| password    | varchar(64) | 密码     | 哈希值 md5加密 |
+| phone       | varchar(11) | 手机号    |           |
+| create_time | datetime    | 创建时间   |           |
+| delete_time | datetime    | 删除时间   |           |
+| is_active   | boolean     | 账号是否启用 |           |
 
 ### `id`
 - 主键
