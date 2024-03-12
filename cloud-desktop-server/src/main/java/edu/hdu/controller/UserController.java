@@ -1,14 +1,9 @@
 package edu.hdu.controller;
 
-import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.dto.UserLoginDTO;
 import edu.hdu.dto.UserSignupDTO;
-import edu.hdu.entity.User;
-import edu.hdu.exception.PasswordErrorException;
-import edu.hdu.properties.JwtProperties;
 import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
-import edu.hdu.utils.JwtUtil;
 import edu.hdu.vo.UserLoginVO;
 import edu.hdu.vo.UserSignupVO;
 import io.swagger.annotations.Api;
@@ -17,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -45,4 +38,11 @@ public class UserController {
         return Result.success(userSignupVO);
     }
 
+    @DeleteMapping("/logoff/{id}")
+    @ApiOperation("注销账户用户")
+    public Result logoff(@PathVariable Long id){
+        log.info("注销账户，id:"+id);
+        userService.logoff(id);
+        return Result.success();
+    }
 }

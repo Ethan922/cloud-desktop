@@ -25,7 +25,9 @@ public class User {
 
     private LocalDateTime createTime;
 
-    private LocalDateTime deleteTime;
+    private LocalDateTime updateTime;
+
+    private Long updateUser;
 
     private Boolean isActive;
 }

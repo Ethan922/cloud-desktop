@@ -25,7 +25,7 @@ public class Container {
 
     private String image;
 
-    private Long ownerId;
+    private Long userId;
 
     private LocalDateTime createTime;
 

@@ -10,4 +10,6 @@ public interface UserService {
     UserLoginVO login(UserLoginDTO userLoginDTO);
 
     UserSignupVO signup(UserSignupDTO userSignupDTO);
+
+    void logoff(Long id);
 }

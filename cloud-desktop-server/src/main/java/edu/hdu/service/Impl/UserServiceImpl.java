@@ -5,18 +5,21 @@ import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.RolesConstant;
 import edu.hdu.dto.UserLoginDTO;
 import edu.hdu.dto.UserSignupDTO;
-import edu.hdu.entity.Roles;
+import edu.hdu.entity.Container;
+import edu.hdu.entity.Role;
 import edu.hdu.entity.User;
-import edu.hdu.entity.UserRoles;
+import edu.hdu.entity.UserRole;
 import edu.hdu.exception.AccountNotActiveException;
 import edu.hdu.exception.AccountNotFoundException;
 import edu.hdu.exception.PasswordErrorException;
 import edu.hdu.exception.UsernameAlreadySignupException;
-import edu.hdu.mapper.RolesMapper;
+import edu.hdu.mapper.ContainerMapper;
+import edu.hdu.mapper.RoleMapper;
 import edu.hdu.mapper.UserMapper;
-import edu.hdu.mapper.UserRolesMapper;
+import edu.hdu.mapper.UserRoleMapper;
 import edu.hdu.properties.JwtProperties;
 import edu.hdu.service.UserService;
+import edu.hdu.utils.DockerUtils;
 import edu.hdu.utils.JwtUtil;
 import edu.hdu.vo.UserLoginVO;
 import edu.hdu.vo.UserSignupVO;
@@ -26,10 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -43,10 +46,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserRolesMapper userRolesMapper;
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private RolesMapper rolesMapper;
+    private RoleMapper roleMapper;
+
+    @Autowired
+    private ContainerMapper containerMapper;
+
+    @Autowired
+    private DockerUtils dockerUtils;
 
     /**
      * 用户登录
@@ -64,7 +73,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
-        //账号未启用
+        //账号被禁用
         if (!user.getIsActive()) {
             throw new AccountNotActiveException(MessageConstant.ACCOUNT_NOT_ACTIVE);
         }
@@ -75,7 +84,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //获取用户权限
-        UserRoles userRoles = userRolesMapper.getByUserId(user.getId());
+        UserRole userRole = userRoleMapper.getByUserId(user.getId());
 
         //登录成功后，下发jwt令牌
         Map<String, Object> claims = new HashMap<>();
@@ -89,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .token(token)
-                .permissions(userRoles.getPermissions())
+                .permission(userRole.getPermission())
                 .build();
     }
 
@@ -116,20 +125,49 @@ public class UserServiceImpl implements UserService {
         //插入用户
         userMapper.insert(user);
 
-        Roles roles=rolesMapper.getByName(RolesConstant.USER);
+        Role role=roleMapper.getByName(RolesConstant.USER);
         //插入用户权限
-        UserRoles userRoles= UserRoles.builder()
-                .roleId(roles.getId())
+        UserRole userRole= UserRole.builder()
+                .roleId(role.getId())
                 .userId(user.getId())
-                .name(roles.getName())
-                .permissions(roles.getPermissions())
+                .name(role.getName())
+                .permission(role.getPermission())
                 .build();
 
-        userRolesMapper.insert(userRoles);
+        userRoleMapper.insert(userRole);
 
         return UserSignupVO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .build();
+    }
+
+    /**
+     * 注销账户
+     * @param id
+     */
+    @Override
+    @Transactional
+    public void logoff(Long id) {
+
+        User user = userMapper.getById(id);
+        if (user==null){
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+
+        //删除user表中的信息
+        userMapper.delete(id);
+
+        //删除user_roles表中的信息
+        userRoleMapper.deleteByUserId(id);
+
+        //清除该用户的所有容器
+        List<Container> containers = containerMapper.getByUserId(id);
+        if (containers!=null&&containers.size()==0) {
+            dockerUtils.removeContainers(containers);
+        }
+
+        //删除container表中的信息
+        containerMapper.deleteByUserId(id);
     }
 }

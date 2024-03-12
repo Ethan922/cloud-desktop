@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRoles {
+public class UserRole {
 
     private Long id;
 
@@ -19,6 +19,6 @@ public class UserRoles {
 
     private String name;
 
-    private Integer permissions;
+    private Integer permission;
 
 }

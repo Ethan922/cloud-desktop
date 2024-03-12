@@ -27,6 +27,6 @@ public class UserLoginVO implements Serializable {
     private String token;
 
     @ApiModelProperty("用户权限")
-    private Integer permissions;
+    private Integer permission;
 
 }

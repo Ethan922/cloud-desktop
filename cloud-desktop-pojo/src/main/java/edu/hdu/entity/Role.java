@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Roles {
+public class Role {
 
     private Long id;
 
@@ -17,5 +17,5 @@ public class Roles {
     private  String name;
 
     //用户权限
-    private Integer permissions;
+    private Integer permission;
 }

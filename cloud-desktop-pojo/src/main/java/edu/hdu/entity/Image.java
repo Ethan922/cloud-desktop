@@ -31,5 +31,5 @@ public class Image {
 
     private Boolean isActive;
 
-    private Long ownerId;
+    private Long userId;
 }
