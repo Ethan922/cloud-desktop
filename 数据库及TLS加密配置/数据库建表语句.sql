@@ -20,10 +20,10 @@ create table user
 create table role
 (
     id         bigint auto_increment comment '主键',
-    name       varchar(32) collate utf8_bin not null comment '角色名',
+    role_name  varchar(32) collate utf8_bin not null comment '角色名',
     permission tinyint                      not null comment '权限 1 管理员 2 用户权限',
     primary key (`id`),
-    unique key (`name`)
+    unique key (`role_name`)
 )
     comment '权限表' collate = utf8_bin;
 
@@ -32,7 +32,7 @@ create table user_role
     id         bigint auto_increment comment '主键',
     user_id    bigint                       not null comment '用户ID',
     role_id    bigint                       not null comment '角色ID',
-    name       varchar(32) collate utf8_bin not null comment '角色名(冗余字段)',
+    role_name  varchar(32) collate utf8_bin not null comment '角色名(冗余字段)',
     permission tinyint                      not null comment '权限(冗余字段)',
     primary key (`id`)
 )

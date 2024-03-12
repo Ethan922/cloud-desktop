@@ -17,7 +17,7 @@ public class UserRole {
 
     private Long roleId;
 
-    private String name;
+    private String roleName;
 
     private Integer permission;
 

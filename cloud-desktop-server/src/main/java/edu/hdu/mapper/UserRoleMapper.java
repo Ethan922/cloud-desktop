@@ -11,8 +11,8 @@ public interface UserRoleMapper {
     @Select("select * from user_role where user_id=#{userId};")
     UserRole getByUserId(Long userId);
 
-    @Insert("insert into user_role (user_id, role_id, name, permission) " +
-            "values (#{userId},#{roleId},#{name},#{permission});")
+    @Insert("insert into user_role (user_id, role_id, role_name, permission) " +
+            "values (#{userId},#{roleId},#{roleName},#{permission});")
     void insert(UserRole userRole);
 
     @Delete("delete from user_role where user_id=#{userId};")
