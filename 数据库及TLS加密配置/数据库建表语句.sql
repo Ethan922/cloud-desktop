@@ -17,23 +17,23 @@ create table user
 )
     comment '用户表' collate = utf8_bin;
 
-create table roles
+create table role
 (
-    id          bigint auto_increment comment '主键',
-    name        varchar(32) collate utf8_bin not null comment '角色名',
-    permissions tinyint                      not null comment '权限 1 管理员 2 用户权限',
+    id         bigint auto_increment comment '主键',
+    name       varchar(32) collate utf8_bin not null comment '角色名',
+    permission tinyint                      not null comment '权限 1 管理员 2 用户权限',
     primary key (`id`),
     unique key (`name`)
 )
     comment '权限表' collate = utf8_bin;
 
-create table user_roles
+create table user_role
 (
-    id          bigint auto_increment comment '主键',
-    user_id     bigint                       not null comment '用户ID',
-    role_id     bigint                       not null comment '角色ID',
-    name        varchar(32) collate utf8_bin not null comment '角色名(冗余字段)',
-    permissions tinyint                      not null comment '权限(冗余字段)',
+    id         bigint auto_increment comment '主键',
+    user_id    bigint                       not null comment '用户ID',
+    role_id    bigint                       not null comment '角色ID',
+    name       varchar(32) collate utf8_bin not null comment '角色名(冗余字段)',
+    permission tinyint                      not null comment '权限(冗余字段)',
     primary key (`id`)
 )
     comment '用户角色关联表' collate = utf8_bin;
@@ -46,10 +46,10 @@ create table image
     image       varchar(255) collate utf8_bin default null null comment '镜像图片',
     tag         varchar(10) collate utf8_bin               not null comment '镜像标签',
     size        varchar(10) collate utf8_bin               not null comment '镜像大小',
-    create_time datetime                      default null null comment '镜像创建时间',
+    create_time datetime                                   not null comment '镜像创建时间',
     delete_time datetime                      default null null comment '镜像删除时间',
     is_active   boolean                       default true not null comment '镜像是否启用',
-    owner_id    bigint                                     not null comment '镜像所有者ID',
+    user_id     bigint                                     not null comment '镜像所有者ID',
     primary key (`id`),
     unique key (`image_id`)
 )
@@ -63,9 +63,9 @@ create table container
     image_id     bigint                                     not null comment '镜像ID',
     name         varchar(32) collate utf8_bin               not null comment '容器名',
     image        varchar(255) collate utf8_bin default null null comment '容器图片',
-    create_time  datetime                      default null null comment '容器创建时间',
+    create_time  datetime                                   not null comment '容器创建时间',
     delete_time  datetime                      default null null comment '删除时间',
-    owner_id     bigint                                     not null comment '所有人ID',
+    user_id      bigint                                     not null comment '所有人ID',
     is_active    boolean                       default true not null comment '容器是否启用',
     status       tinyint                       default 1    not null comment '容器状态',
     primary key (`id`),
