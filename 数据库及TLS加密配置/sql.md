@@ -2,64 +2,79 @@
 ## 用户表 - user
 1.user
 
-| 字段名         | 数据类型        | 说明     | 备注        |
-|-------------|-------------|--------|-----------|
-| id          | bigint      | 主键     | 自增        |
-| username    | varchar(32) | 用户名    | 唯一        |
-| email       | varchar(64) | 邮箱     |           |
-| password    | varchar(64) | 密码     | 哈希值 md5加密 |
-| phone       | varchar(11) | 手机号    |           |
-| create_time | datetime    | 创建时间   |           |
-| delete_time | datetime    | 删除时间   |           |
+| 字段名         | 数据类型        | 说明    | 备注        |
+|-------------|-------------|-------|-----------|
+| id          | bigint      | 主键    | 自增        |
+| username    | varchar(32) | 用户名   | 唯一        |
+| email       | varchar(64) | 邮箱    |           |
+| password    | varchar(64) | 密码    | 哈希值 md5加密 |
+| phone       | varchar(11) | 手机号   |           |
+| create_time | datetime    | 创建时间  |           |
+| update_time | datetime    | 最后更新时间 |           |
+| update_user | bigint      | 更新人ID |           |
 | is_active   | boolean     | 账号是否启用 |           |
 
 ### `id`
 - 主键
-作用：唯一标识用户
+- 作用：唯一标识用户
 
 ### `username`
 
 - 用户名
 - 类型：varchar(32)
 - 唯一
-作用：用户登录时的用户名
+- 作用：用户登录时的用户名
 
 ### `email`
 
 - 邮箱
 - 类型：varchar(64)
-- 唯一
-作用：用户注册时的邮箱
+- 非空，唯一
+- 作用：用户注册时的邮箱
 
 ### `password`
 
 - 密码
 - 类型：varchar(64)
 - 哈希值，可以使用md5加密，不建议使用明文
-作用：用户登录时的密码
+- 作用：用户登录时的密码
 
 ### `phone`
 
 - 手机号
 - 类型：varchar(11)
-- 可选，唯一
-作用：用户注册时的手机号
+- 可为空，唯一
+- 作用：用户注册时的手机号
 
 ### `create_time`
 
 - 创建时间
 - 类型：datetime
 - 默认值：当前时间
-- 不可空
-作用：用户注册时的时间
+- 非空
+- 作用：用户注册时的时间
 
-### `delete_time`
+### `update_time`
 
-- 注销时间
+- 最后更新时间
 - 类型：datetime
-- 默认值：NULL
-- 可空
-作用：用户注销时的时间
+- 可为空
+- 作用：用户更新时的时间
+
+### `update_user`
+
+- 更新人ID
+- 类型：bigint
+- 可为空
+- 作用：更新人的ID
+
+### `is_active`
+
+- 账户是否启用
+- 类型：boolean
+- 默认值：true
+- 非空
+- 作用：root用户可以通过该字段禁用或启用user用户
 ## 权限表 - roles
 2.roles
 

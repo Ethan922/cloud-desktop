@@ -1,16 +1,17 @@
-CREATE DATABASE  IF NOT EXISTS `cloud_desktop` ;
+CREATE DATABASE IF NOT EXISTS `cloud_desktop`;
 USE `cloud_desktop`;
 
 create table user
 (
     id          bigint auto_increment comment '主键',
-    username    varchar(32) collate utf8_bin not null comment '用户名',
-    email       varchar(64) collate utf8_bin not null comment '邮箱',
-    phone       varchar(11) collate utf8_bin not null comment '手机号',
-    password    varchar(64) collate utf8_bin not null comment '密码',
-    create_time datetime default null        null comment '创建时间',
-    delete_time datetime default null        null comment '删除时间',
-    is_active boolean default true not null comment '账号是否启用',
+    username    varchar(32) collate utf8_bin              not null comment '用户名',
+    email       varchar(64) collate utf8_bin              not null comment '邮箱',
+    phone       varchar(11) collate utf8_bin default null comment '手机号',
+    password    varchar(64) collate utf8_bin              not null comment '密码',
+    create_time datetime                                  not null comment '创建时间',
+    update_time datetime                     default null comment '最后更新时间',
+    update_user datetime                     default null comment '更新人ID',
+    is_active   boolean                      default true not null comment '账号是否启用',
     PRIMARY KEY (`id`),
     UNIQUE KEY (`username`)
 )
@@ -40,15 +41,15 @@ create table user_roles
 create table image
 (
     id          bigint auto_increment comment '主键',
-    image_id    varchar(60) collate utf8_bin  not null comment '镜像id',
-    name        varchar(50) collate utf8_bin  not null comment '镜像名',
-    image        varchar(255) collate utf8_bin default null null comment '镜像图片',
-    tag         varchar(10) collate utf8_bin  not null comment '镜像标签',
-    size        varchar(10) collate utf8_bin  not null comment '镜像大小',
-    create_time datetime default null         null comment '镜像创建时间',
-    delete_time datetime default null         null comment '镜像删除时间',
-    is_active   boolean  default true         not null comment '镜像是否启用',
-    owner_id    bigint                        not null comment '镜像所有者ID',
+    image_id    varchar(60) collate utf8_bin               not null comment '镜像id',
+    name        varchar(50) collate utf8_bin               not null comment '镜像名',
+    image       varchar(255) collate utf8_bin default null null comment '镜像图片',
+    tag         varchar(10) collate utf8_bin               not null comment '镜像标签',
+    size        varchar(10) collate utf8_bin               not null comment '镜像大小',
+    create_time datetime                      default null null comment '镜像创建时间',
+    delete_time datetime                      default null null comment '镜像删除时间',
+    is_active   boolean                       default true not null comment '镜像是否启用',
+    owner_id    bigint                                     not null comment '镜像所有者ID',
     primary key (`id`),
     unique key (`image_id`)
 )
