@@ -2,6 +2,7 @@ package edu.hdu.service.Impl;
 
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.constant.MessageConstant;
+import edu.hdu.constant.PermissionConstant;
 import edu.hdu.constant.RolesConstant;
 import edu.hdu.context.BaseContext;
 import edu.hdu.dto.ChangePasswordDTO;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -194,6 +196,26 @@ public class UserServiceImpl implements UserService {
         userMapper.update(User.builder()
                 .id(BaseContext.getCurrentUserId())
                 .password(newPassword)
+                .updateUser(BaseContext.getCurrentUserId())
+                .updateTime(LocalDateTime.now())
+                .build());
+    }
+
+    /**
+     * 禁用或启用用户账号
+     * @param id
+     */
+    @Override
+    public void changeActiveness(Long id) {
+        UserRole userRole = userRoleMapper.getByUserId(BaseContext.getCurrentUserId());
+        //判断当前用户是否具有root权限
+        if (!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)){
+            throw new PermissionDeniedException(MessageConstant.PERMISSION_DENIED);
+        }
+        User user=userMapper.getById(id);
+        userMapper.update(User.builder()
+                .id(id)
+                .isActive(!user.getIsActive())
                 .updateUser(BaseContext.getCurrentUserId())
                 .updateTime(LocalDateTime.now())
                 .build());

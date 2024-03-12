@@ -54,4 +54,12 @@ public class UserController {
         userService.changePassword(changePasswordDTO);
         return Result.success();
     }
+
+    @PostMapping("/changeActiveness/{id}")
+    @ApiOperation("禁用或启用用户账号")
+    public Result changeActiveness(@PathVariable Long id){
+        log.info("禁用或启用用户账号，用户id:"+id);
+        userService.changeActiveness(id);
+        return Result.success();
+    }
 }

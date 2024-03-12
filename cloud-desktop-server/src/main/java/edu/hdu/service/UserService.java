@@ -15,4 +15,6 @@ public interface UserService {
     void logoff(Long id);
 
     void changePassword(ChangePasswordDTO changePasswordDTO);
+
+    void changeActiveness(Long id);
 }
