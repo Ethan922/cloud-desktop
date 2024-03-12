@@ -1,5 +1,6 @@
 package edu.hdu.controller;
 
+import edu.hdu.dto.ChangePasswordDTO;
 import edu.hdu.dto.UserLoginDTO;
 import edu.hdu.dto.UserSignupDTO;
 import edu.hdu.result.Result;
@@ -43,6 +44,14 @@ public class UserController {
     public Result logoff(@PathVariable Long id){
         log.info("注销账户，id:"+id);
         userService.logoff(id);
+        return Result.success();
+    }
+
+    @PutMapping("/changePassword")
+    @ApiOperation("修改密码")
+    public Result changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        log.info("修改密码");
+        userService.changePassword(changePasswordDTO);
         return Result.success();
     }
 }

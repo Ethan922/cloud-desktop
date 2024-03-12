@@ -3,16 +3,15 @@ package edu.hdu.service.Impl;
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.RolesConstant;
+import edu.hdu.context.BaseContext;
+import edu.hdu.dto.ChangePasswordDTO;
 import edu.hdu.dto.UserLoginDTO;
 import edu.hdu.dto.UserSignupDTO;
 import edu.hdu.entity.Container;
 import edu.hdu.entity.Role;
 import edu.hdu.entity.User;
 import edu.hdu.entity.UserRole;
-import edu.hdu.exception.AccountNotActiveException;
-import edu.hdu.exception.AccountNotFoundException;
-import edu.hdu.exception.PasswordErrorException;
-import edu.hdu.exception.UsernameAlreadySignupException;
+import edu.hdu.exception.*;
 import edu.hdu.mapper.ContainerMapper;
 import edu.hdu.mapper.RoleMapper;
 import edu.hdu.mapper.UserMapper;
@@ -125,9 +124,9 @@ public class UserServiceImpl implements UserService {
         //插入用户
         userMapper.insert(user);
 
-        Role role=roleMapper.getByName(RolesConstant.USER);
+        Role role = roleMapper.getByName(RolesConstant.USER);
         //插入用户权限
-        UserRole userRole= UserRole.builder()
+        UserRole userRole = UserRole.builder()
                 .roleId(role.getId())
                 .userId(user.getId())
                 .name(role.getName())
@@ -144,6 +143,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 注销账户
+     *
      * @param id
      */
     @Override
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     public void logoff(Long id) {
 
         User user = userMapper.getById(id);
-        if (user==null){
+        if (user == null) {
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
 
@@ -163,11 +163,39 @@ public class UserServiceImpl implements UserService {
 
         //清除该用户的所有容器
         List<Container> containers = containerMapper.getByUserId(id);
-        if (containers!=null&&containers.size()==0) {
+        if (containers != null && containers.size() == 0) {
             dockerUtils.removeContainers(containers);
         }
 
         //删除container表中的信息
         containerMapper.deleteByUserId(id);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param changePasswordDTO
+     */
+    @Override
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        //旧密码与新密码相同
+        if (changePasswordDTO.getOldPassword().equals(changePasswordDTO.getNewPassword())) {
+            throw new PasswordChangeFailedException(MessageConstant.TWO_PASSWORDS_SAME);
+        }
+
+        String oldPassword = DigestUtils.md5DigestAsHex(changePasswordDTO.getOldPassword().getBytes());
+        User user = userMapper.getById(BaseContext.getCurrentUserId());
+
+        //原密码错误
+        if (!oldPassword.equals(user.getPassword())) {
+            throw new PasswordChangeFailedException(MessageConstant.OLD_PASSWORD_ERROR);
+        }
+        String newPassword = DigestUtils.md5DigestAsHex(changePasswordDTO.getNewPassword().getBytes());
+        userMapper.update(User.builder()
+                .id(BaseContext.getCurrentUserId())
+                .password(newPassword)
+                .updateUser(BaseContext.getCurrentUserId())
+                .updateTime(LocalDateTime.now())
+                .build());
     }
 }
