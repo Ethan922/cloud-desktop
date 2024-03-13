@@ -1,5 +1,6 @@
 package edu.hdu.controller;
 
+import edu.hdu.annotation.CheckPermission;
 import edu.hdu.context.BaseContext;
 import edu.hdu.dto.*;
 import edu.hdu.entity.User;
@@ -44,15 +45,15 @@ public class UserController {
 
     @DeleteMapping("/logoff/{id}")
     @ApiOperation("注销账户用户")
-    public Result logoff(@PathVariable Long id){
-        log.info("注销账户，id:"+id);
+    public Result logoff(@PathVariable Long id) {
+        log.info("注销账户，id:" + id);
         userService.logoff(id);
         return Result.success();
     }
 
     @PutMapping("/changePassword")
     @ApiOperation("修改密码")
-    public Result changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+    public Result changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
         log.info("修改密码");
         userService.changePassword(changePasswordDTO);
         return Result.success();
@@ -60,32 +61,33 @@ public class UserController {
 
     @PostMapping("/changeActiveness/{id}")
     @ApiOperation("禁用或启用用户账号")
-    public Result changeActiveness(@PathVariable Long id){
-        log.info("禁用或启用用户账号，用户id:"+id);
+    public Result changeActiveness(@PathVariable Long id) {
+        log.info("禁用或启用用户账号，用户id:" + id);
         userService.changeActiveness(id);
         return Result.success();
     }
 
+
     @GetMapping("/pageQuery")
     @ApiOperation("用户分页查询")
-    public Result<PageResult> pageQuery(UserPageQueryDTO userPageQueryDTO){
+    public Result<PageResult> pageQuery(UserPageQueryDTO userPageQueryDTO) {
         log.info("用户分页查询");
-        PageResult pageResult=userService.pageQuery(userPageQueryDTO);
+        PageResult pageResult = userService.pageQuery(userPageQueryDTO);
         return Result.success(pageResult);
     }
 
     @GetMapping("/detail")
     @ApiOperation("查询当前用户详细信息")
-    public Result<UserQueryVO> getById(){
-        log.info("查询当前用户详细信息,用户id:"+ BaseContext.getCurrentUserId());
+    public Result<UserQueryVO> getById() {
+        log.info("查询当前用户详细信息,用户id:" + BaseContext.getCurrentUserId());
         UserQueryVO userQueryVO = userService.getById(BaseContext.getCurrentUserId());
         return Result.success(userQueryVO);
     }
 
     @PutMapping("/modify")
     @ApiOperation("修改当前用户的信息")
-    public Result modify(@RequestBody UserModifyDTO userModifyDTO){
-        log.info("修改当前用户信息,用户id:"+ BaseContext.getCurrentUserId());
+    public Result modify(@RequestBody UserModifyDTO userModifyDTO) {
+        log.info("修改当前用户信息,用户id:" + BaseContext.getCurrentUserId());
         userService.modify(userModifyDTO);
         return Result.success();
     }

@@ -2,6 +2,7 @@ package edu.hdu.service.Impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import edu.hdu.annotation.CheckPermission;
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.PermissionConstant;
@@ -204,16 +205,6 @@ public class UserServiceImpl implements UserService {
                 .build());
     }
 
-    /**
-     * 校验用户权限
-     */
-    private void checkUserPermission() {
-        UserRole userRole = userRoleMapper.getByUserId(BaseContext.getCurrentUserId());
-        //判断当前用户是否具有root权限
-        if (!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)) {
-            throw new PermissionDeniedException(MessageConstant.PERMISSION_DENIED);
-        }
-    }
 
     /**
      * 禁用或启用用户账号
@@ -221,8 +212,9 @@ public class UserServiceImpl implements UserService {
      * @param id
      */
     @Override
+    @CheckPermission
     public void changeActiveness(Long id) {
-        checkUserPermission();
+//        checkUserPermission();
         User user = userMapper.getById(id);
         userMapper.update(User.builder()
                 .id(id)
@@ -239,8 +231,9 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @CheckPermission
     public PageResult pageQuery(UserPageQueryDTO userPageQueryDTO) {
-        checkUserPermission();
+//        checkUserPermission();
         PageHelper.startPage(userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         Page<UserVO> page = userMapper.pageQuery(userPageQueryDTO);
         return PageResult.builder()
@@ -276,7 +269,7 @@ public class UserServiceImpl implements UserService {
         User originalUser = userMapper.getByUsername(username);
 
         //判断用户名是否被占用
-        if (originalUser != null && !currentUserId.equals(originalUser.getId())){
+        if (originalUser != null && !currentUserId.equals(originalUser.getId())) {
             throw new UsernameOccupiedException(MessageConstant.USERNAME_OCCUPIED);
         }
 
