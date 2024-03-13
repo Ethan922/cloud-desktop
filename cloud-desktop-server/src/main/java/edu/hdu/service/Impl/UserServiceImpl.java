@@ -7,10 +7,7 @@ import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.PermissionConstant;
 import edu.hdu.constant.RolesConstant;
 import edu.hdu.context.BaseContext;
-import edu.hdu.dto.ChangePasswordDTO;
-import edu.hdu.dto.UserLoginDTO;
-import edu.hdu.dto.UserPageQueryDTO;
-import edu.hdu.dto.UserSignupDTO;
+import edu.hdu.dto.*;
 import edu.hdu.entity.Container;
 import edu.hdu.entity.Role;
 import edu.hdu.entity.User;
@@ -122,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
         //用户名已注册
         if (user != null) {
-            throw new UsernameAlreadySignupException(MessageConstant.USERNAME_ALREADY_SIGNUP);
+            throw new UsernameOccupiedException(MessageConstant.USERNAME_OCCUPIED);
         }
 
         user = new User();
@@ -210,21 +207,23 @@ public class UserServiceImpl implements UserService {
     /**
      * 校验用户权限
      */
-    private void checkUserPermission(){
+    private void checkUserPermission() {
         UserRole userRole = userRoleMapper.getByUserId(BaseContext.getCurrentUserId());
         //判断当前用户是否具有root权限
-        if (!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)){
+        if (!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)) {
             throw new PermissionDeniedException(MessageConstant.PERMISSION_DENIED);
         }
     }
+
     /**
      * 禁用或启用用户账号
+     *
      * @param id
      */
     @Override
     public void changeActiveness(Long id) {
         checkUserPermission();
-        User user=userMapper.getById(id);
+        User user = userMapper.getById(id);
         userMapper.update(User.builder()
                 .id(id)
                 .isActive(!user.getIsActive())
@@ -235,13 +234,14 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户分页查询
+     *
      * @param userPageQueryDTO
      * @return
      */
     @Override
     public PageResult pageQuery(UserPageQueryDTO userPageQueryDTO) {
         checkUserPermission();
-        PageHelper.startPage(userPageQueryDTO.getPage(),userPageQueryDTO.getPageSize());
+        PageHelper.startPage(userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         Page<UserVO> page = userMapper.pageQuery(userPageQueryDTO);
         return PageResult.builder()
                 .total(page.getTotal())
@@ -251,15 +251,38 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据用户ID查询用户信息
+     *
      * @param id
      * @return
      */
     @Override
     public UserQueryVO getById(Long id) {
         User user = userMapper.getById(id);
-        UserQueryVO userQueryVO=new UserQueryVO();
-        BeanUtils.copyProperties(user,userQueryVO);
-        return  userQueryVO;
+        UserQueryVO userQueryVO = new UserQueryVO();
+        BeanUtils.copyProperties(user, userQueryVO);
+        return userQueryVO;
 
+    }
+
+    /**
+     * 修改当前用户的信息
+     *
+     * @param userModifyDTO
+     */
+    @Override
+    public void modify(UserModifyDTO userModifyDTO) {
+        Long currentUserId = BaseContext.getCurrentUserId();
+        String username = userModifyDTO.getUsername();
+        User originalUser = userMapper.getByUsername(username);
+
+        //判断用户名是否被占用
+        if (originalUser != null && !currentUserId.equals(originalUser.getId())){
+            throw new UsernameOccupiedException(MessageConstant.USERNAME_OCCUPIED);
+        }
+
+        User user = new User();
+        BeanUtils.copyProperties(userModifyDTO, user);
+        user.setId(currentUserId);
+        userMapper.update(user);
     }
 }

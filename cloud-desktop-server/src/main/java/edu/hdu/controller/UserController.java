@@ -1,10 +1,7 @@
 package edu.hdu.controller;
 
 import edu.hdu.context.BaseContext;
-import edu.hdu.dto.ChangePasswordDTO;
-import edu.hdu.dto.UserLoginDTO;
-import edu.hdu.dto.UserPageQueryDTO;
-import edu.hdu.dto.UserSignupDTO;
+import edu.hdu.dto.*;
 import edu.hdu.entity.User;
 import edu.hdu.result.PageResult;
 import edu.hdu.result.Result;
@@ -83,5 +80,13 @@ public class UserController {
         log.info("查询当前用户详细信息,用户id:"+ BaseContext.getCurrentUserId());
         UserQueryVO userQueryVO = userService.getById(BaseContext.getCurrentUserId());
         return Result.success(userQueryVO);
+    }
+
+    @PutMapping("/modify")
+    @ApiOperation("修改当前用户的信息")
+    public Result modify(@RequestBody UserModifyDTO userModifyDTO){
+        log.info("修改当前用户信息,用户id:"+ BaseContext.getCurrentUserId());
+        userService.modify(userModifyDTO);
+        return Result.success();
     }
 }
