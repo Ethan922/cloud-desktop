@@ -1,14 +1,18 @@
 package edu.hdu.controller;
 
+import edu.hdu.context.BaseContext;
 import edu.hdu.dto.ChangePasswordDTO;
 import edu.hdu.dto.UserLoginDTO;
 import edu.hdu.dto.UserPageQueryDTO;
 import edu.hdu.dto.UserSignupDTO;
+import edu.hdu.entity.User;
 import edu.hdu.result.PageResult;
 import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
 import edu.hdu.vo.UserLoginVO;
+import edu.hdu.vo.UserQueryVO;
 import edu.hdu.vo.UserSignupVO;
+import edu.hdu.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +72,16 @@ public class UserController {
     @GetMapping("/pageQuery")
     @ApiOperation("用户分页查询")
     public Result<PageResult> pageQuery(UserPageQueryDTO userPageQueryDTO){
+        log.info("用户分页查询");
         PageResult pageResult=userService.pageQuery(userPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @GetMapping("/detail")
+    @ApiOperation("查询当前用户详细信息")
+    public Result<UserQueryVO> getById(){
+        log.info("查询当前用户详细信息,用户id:"+ BaseContext.getCurrentUserId());
+        UserQueryVO userQueryVO = userService.getById(BaseContext.getCurrentUserId());
+        return Result.success(userQueryVO);
     }
 }

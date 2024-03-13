@@ -7,7 +7,9 @@ import edu.hdu.dto.UserPageQueryDTO;
 import edu.hdu.dto.UserSignupDTO;
 import edu.hdu.result.PageResult;
 import edu.hdu.vo.UserLoginVO;
+import edu.hdu.vo.UserQueryVO;
 import edu.hdu.vo.UserSignupVO;
+import edu.hdu.vo.UserVO;
 
 public interface UserService {
     UserLoginVO login(UserLoginDTO userLoginDTO);
@@ -21,4 +23,6 @@ public interface UserService {
     void changeActiveness(Long id);
 
     PageResult pageQuery(UserPageQueryDTO userPageQueryDTO);
+
+    UserQueryVO getById(Long id);
 }

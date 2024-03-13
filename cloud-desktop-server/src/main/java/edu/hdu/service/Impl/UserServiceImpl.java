@@ -26,6 +26,7 @@ import edu.hdu.service.UserService;
 import edu.hdu.utils.DockerUtils;
 import edu.hdu.utils.JwtUtil;
 import edu.hdu.vo.UserLoginVO;
+import edu.hdu.vo.UserQueryVO;
 import edu.hdu.vo.UserSignupVO;
 import edu.hdu.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -246,5 +247,19 @@ public class UserServiceImpl implements UserService {
                 .total(page.getTotal())
                 .records(page.getResult())
                 .build();
+    }
+
+    /**
+     * 根据用户ID查询用户信息
+     * @param id
+     * @return
+     */
+    @Override
+    public UserQueryVO getById(Long id) {
+        User user = userMapper.getById(id);
+        UserQueryVO userQueryVO=new UserQueryVO();
+        BeanUtils.copyProperties(user,userQueryVO);
+        return  userQueryVO;
+
     }
 }

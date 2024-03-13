@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("用户视图模型")
-public class UserVO {
+@ApiModel("根据id查询用户信息返回的视图模型")
+public class UserQueryVO {
 
     @ApiModelProperty("用户ID")
     private Long id;
@@ -22,15 +22,9 @@ public class UserVO {
     @ApiModelProperty("用户名")
     private String username;
 
-    @ApiModelProperty("用户创建时间")
-    private LocalDateTime createTime;
+    @ApiModelProperty("手机号")
+    private String phone;
 
-    @ApiModelProperty("用户状态")
-    private Boolean isActive;
-
-    @ApiModelProperty("用户角色名")
-    private String roleName;
-
-    @ApiModelProperty("用户权限")
-    private Integer permission;
+    @ApiModelProperty("邮箱")
+    private String email;
 }
