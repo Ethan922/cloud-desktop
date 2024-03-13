@@ -1,5 +1,7 @@
 package edu.hdu.service.Impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import edu.hdu.constant.JwtClaimsConstant;
 import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.PermissionConstant;
@@ -7,6 +9,7 @@ import edu.hdu.constant.RolesConstant;
 import edu.hdu.context.BaseContext;
 import edu.hdu.dto.ChangePasswordDTO;
 import edu.hdu.dto.UserLoginDTO;
+import edu.hdu.dto.UserPageQueryDTO;
 import edu.hdu.dto.UserSignupDTO;
 import edu.hdu.entity.Container;
 import edu.hdu.entity.Role;
@@ -18,11 +21,13 @@ import edu.hdu.mapper.RoleMapper;
 import edu.hdu.mapper.UserMapper;
 import edu.hdu.mapper.UserRoleMapper;
 import edu.hdu.properties.JwtProperties;
+import edu.hdu.result.PageResult;
 import edu.hdu.service.UserService;
 import edu.hdu.utils.DockerUtils;
 import edu.hdu.utils.JwtUtil;
 import edu.hdu.vo.UserLoginVO;
 import edu.hdu.vo.UserSignupVO;
+import edu.hdu.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,12 +131,12 @@ public class UserServiceImpl implements UserService {
         //插入用户
         userMapper.insert(user);
 
-        Role role = roleMapper.getByName(RolesConstant.USER);
+        Role role = roleMapper.getByRoleName(RolesConstant.USER);
         //插入用户权限
         UserRole userRole = UserRole.builder()
                 .roleId(role.getId())
                 .userId(user.getId())
-                .name(role.getName())
+                .roleName(role.getRoleName())
                 .permission(role.getPermission())
                 .build();
 
@@ -202,16 +207,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 禁用或启用用户账号
-     * @param id
+     * 校验用户权限
      */
-    @Override
-    public void changeActiveness(Long id) {
+    private void checkUserPermission(){
         UserRole userRole = userRoleMapper.getByUserId(BaseContext.getCurrentUserId());
         //判断当前用户是否具有root权限
         if (!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)){
             throw new PermissionDeniedException(MessageConstant.PERMISSION_DENIED);
         }
+    }
+    /**
+     * 禁用或启用用户账号
+     * @param id
+     */
+    @Override
+    public void changeActiveness(Long id) {
+        checkUserPermission();
         User user=userMapper.getById(id);
         userMapper.update(User.builder()
                 .id(id)
@@ -219,5 +230,21 @@ public class UserServiceImpl implements UserService {
                 .updateUser(BaseContext.getCurrentUserId())
                 .updateTime(LocalDateTime.now())
                 .build());
+    }
+
+    /**
+     * 用户分页查询
+     * @param userPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(UserPageQueryDTO userPageQueryDTO) {
+        checkUserPermission();
+        PageHelper.startPage(userPageQueryDTO.getPage(),userPageQueryDTO.getPageSize());
+        Page<UserVO> page = userMapper.pageQuery(userPageQueryDTO);
+        return PageResult.builder()
+                .total(page.getTotal())
+                .records(page.getResult())
+                .build();
     }
 }

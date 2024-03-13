@@ -1,6 +1,10 @@
 package edu.hdu.mapper;
 
+import com.github.pagehelper.Page;
+import edu.hdu.dto.UserPageQueryDTO;
 import edu.hdu.entity.User;
+import edu.hdu.result.PageResult;
+import edu.hdu.vo.UserVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +24,6 @@ public interface UserMapper {
 
     @Select("select * from user where id=#{id};")
     User getById(Long id);
+
+    Page<UserVO> pageQuery(UserPageQueryDTO userPageQueryDTO);
 }

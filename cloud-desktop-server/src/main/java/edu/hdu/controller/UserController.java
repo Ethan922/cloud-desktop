@@ -2,7 +2,9 @@ package edu.hdu.controller;
 
 import edu.hdu.dto.ChangePasswordDTO;
 import edu.hdu.dto.UserLoginDTO;
+import edu.hdu.dto.UserPageQueryDTO;
 import edu.hdu.dto.UserSignupDTO;
+import edu.hdu.result.PageResult;
 import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
 import edu.hdu.vo.UserLoginVO;
@@ -61,5 +63,12 @@ public class UserController {
         log.info("禁用或启用用户账号，用户id:"+id);
         userService.changeActiveness(id);
         return Result.success();
+    }
+
+    @GetMapping("/pageQuery")
+    @ApiOperation("用户分页查询")
+    public Result<PageResult> pageQuery(UserPageQueryDTO userPageQueryDTO){
+        PageResult pageResult=userService.pageQuery(userPageQueryDTO);
+        return Result.success(pageResult);
     }
 }
