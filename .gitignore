@@ -12,7 +12,7 @@ application-dev.yml
 *.iws
 *.iml
 *.ipr
-**/.gitignore
+/.gitignore
 
 ### Eclipse ###
 .apt_generated
