@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
 
         //获取用户权限
         UserRole userRole = userRoleMapper.getByUserId(user.getId());
+        Role role=roleMapper.getById(userRole.getRoleId());
 
         //登录成功后，下发jwt令牌
         Map<String, Object> claims = new HashMap<>();
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .token(token)
-                .permission(userRole.getPermission())
+                .permission(role.getPermission())
                 .build();
     }
 
@@ -135,8 +136,6 @@ public class UserServiceImpl implements UserService {
         UserRole userRole = UserRole.builder()
                 .roleId(role.getId())
                 .userId(user.getId())
-                .roleName(role.getRoleName())
-                .permission(role.getPermission())
                 .build();
 
         userRoleMapper.insert(userRole);

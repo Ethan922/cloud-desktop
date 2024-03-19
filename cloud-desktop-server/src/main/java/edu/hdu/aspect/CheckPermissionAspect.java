@@ -3,9 +3,10 @@ package edu.hdu.aspect;
 import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.PermissionConstant;
 import edu.hdu.context.BaseContext;
+import edu.hdu.entity.Role;
 import edu.hdu.entity.UserRole;
 import edu.hdu.exception.PermissionDeniedException;
-import edu.hdu.mapper.UserMapper;
+import edu.hdu.mapper.RoleMapper;
 import edu.hdu.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,6 +28,9 @@ public class CheckPermissionAspect {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Pointcut("execution(* edu.hdu.service.Impl.*.*(..)) && @annotation(edu.hdu.annotation.CheckPermission)")
     public void checkPermissionPointcut(){}
 
@@ -34,7 +38,8 @@ public class CheckPermissionAspect {
     public void checkPermission(){
         Long currentUserId = BaseContext.getCurrentUserId();
         UserRole userRole = userRoleMapper.getByUserId(currentUserId);
-        if(!Objects.equals(userRole.getPermission(), PermissionConstant.ADMINSTRATOR)){
+        Role role=roleMapper.getById(userRole.getRoleId());
+        if(!Objects.equals(role.getPermission(), PermissionConstant.ADMINSTRATOR)){
             throw new PermissionDeniedException(MessageConstant.PERMISSION_DENIED);
         }
     }
