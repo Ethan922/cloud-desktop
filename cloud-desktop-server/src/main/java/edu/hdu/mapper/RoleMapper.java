@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Select;
 public interface RoleMapper {
     @Select("select * from role where role_name=#{roleName};")
     Role getByRoleName(String roleName);
+
+    void insert(Role role);
 }

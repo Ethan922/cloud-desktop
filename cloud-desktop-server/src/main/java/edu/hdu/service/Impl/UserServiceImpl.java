@@ -214,7 +214,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @CheckPermission
     public void changeActiveness(Long id) {
-//        checkUserPermission();
         User user = userMapper.getById(id);
         userMapper.update(User.builder()
                 .id(id)
@@ -233,7 +232,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @CheckPermission
     public PageResult pageQuery(UserPageQueryDTO userPageQueryDTO) {
-//        checkUserPermission();
         PageHelper.startPage(userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
         Page<UserVO> page = userMapper.pageQuery(userPageQueryDTO);
         return PageResult.builder()
