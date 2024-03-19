@@ -14,6 +14,7 @@ public class MessageConstant {
     public static final String UNKNOWN_ERROR = "未知错误";
     public static final String USERNAME_OCCUPIED = "用户名被占用";
     public static final String ROLE_NAME_OCCUPIED = "角色名被占用";
-
-
+    public static final String ROLE_ASSOCIATE_USER = "当前角色关联了用户，无法删除";
+    public static final String ROLE_DELETE_NOT_ALLOWED = "当前角色不允许删除";
+    public static final String ROLE_NOT_FOUND = "角色不存在";
 }

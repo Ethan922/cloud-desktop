@@ -17,4 +17,7 @@ public interface UserRoleMapper {
 
     @Delete("delete from user_role where user_id=#{userId};")
     void deleteByUserId(Long userId);
+
+    @Select("select * from user_role where role_id=#{roleId};")
+    UserRole getByRoleId(Long roleId);
 }
