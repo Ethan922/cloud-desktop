@@ -254,7 +254,6 @@ public class UserServiceImpl implements UserService {
         UserQueryVO userQueryVO = new UserQueryVO();
         BeanUtils.copyProperties(user, userQueryVO);
         return userQueryVO;
-
     }
 
     /**

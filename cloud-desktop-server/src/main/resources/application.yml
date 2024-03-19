@@ -43,9 +43,9 @@ jwt:
   token-name: token
 
 docker:
-  host: tcp://192.168.110.142:2375
-  api-version: 1.43
-  registry-url: https://index.docker.io/v1/
+  host: ${hdu.docker.host}
+  api-version: ${hdu.docker.api-version}
+  registry-url: ${hdu.docker.registry-url}
   max-connections: 100
 
 

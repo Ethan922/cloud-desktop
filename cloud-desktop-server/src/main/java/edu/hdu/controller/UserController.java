@@ -1,16 +1,13 @@
 package edu.hdu.controller;
 
-import edu.hdu.annotation.CheckPermission;
 import edu.hdu.context.BaseContext;
 import edu.hdu.dto.*;
-import edu.hdu.entity.User;
 import edu.hdu.result.PageResult;
 import edu.hdu.result.Result;
 import edu.hdu.service.UserService;
 import edu.hdu.vo.UserLoginVO;
 import edu.hdu.vo.UserQueryVO;
 import edu.hdu.vo.UserSignupVO;
-import edu.hdu.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
