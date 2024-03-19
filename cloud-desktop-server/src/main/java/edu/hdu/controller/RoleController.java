@@ -4,6 +4,7 @@ import edu.hdu.dto.RoleDTO;
 import edu.hdu.entity.Role;
 import edu.hdu.result.Result;
 import edu.hdu.service.RoleService;
+import edu.hdu.vo.RoleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,10 @@ public class RoleController {
 
     @PostMapping("/create")
     @ApiOperation("添加角色")
-    public Result<Role> createRole(@RequestBody RoleDTO roleDTO){
+    public Result<RoleVO> createRole(@RequestBody RoleDTO roleDTO){
         log.info("新增角色，角色名:"+roleDTO.getRoleName());
-        Role role =roleService.createRole(roleDTO);
-        return Result.success(role);
+        RoleVO roleVO =roleService.createRole(roleDTO);
+        return Result.success(roleVO);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -35,4 +36,5 @@ public class RoleController {
         roleService.delete(id);
         return Result.success();
     }
+    
 }

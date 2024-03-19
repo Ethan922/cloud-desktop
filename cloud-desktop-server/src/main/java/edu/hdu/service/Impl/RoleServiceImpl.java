@@ -3,6 +3,7 @@ package edu.hdu.service.Impl;
 import edu.hdu.annotation.CheckPermission;
 import edu.hdu.constant.MessageConstant;
 import edu.hdu.constant.RolesConstant;
+import edu.hdu.context.BaseContext;
 import edu.hdu.dto.RoleDTO;
 import edu.hdu.entity.Role;
 import edu.hdu.entity.UserRole;
@@ -11,10 +12,13 @@ import edu.hdu.exception.RoleNameOccupiedException;
 import edu.hdu.mapper.RoleMapper;
 import edu.hdu.mapper.UserRoleMapper;
 import edu.hdu.service.RoleService;
+import edu.hdu.vo.RoleVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -34,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @CheckPermission
-    public Role createRole(RoleDTO roleDTO) {
+    public RoleVO createRole(RoleDTO roleDTO) {
         String roleName = roleDTO.getRoleName();
         Role role = roleMapper.getByRoleName(roleName);
 
@@ -46,9 +50,15 @@ public class RoleServiceImpl implements RoleService {
         //插入角色
         role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
+        role.setCreateUser(BaseContext.getCurrentUserId());
+        role.setUpdateUser(BaseContext.getCurrentUserId());
+        role.setCreateTime(LocalDateTime.now());
+        role.setUpdateTime(LocalDateTime.now());
         roleMapper.insert(role);
 
-        return role;
+        RoleVO roleVO=new RoleVO();
+        BeanUtils.copyProperties(role,roleVO);
+        return roleVO;
     }
 
     /**

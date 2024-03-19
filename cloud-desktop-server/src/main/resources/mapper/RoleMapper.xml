@@ -3,7 +3,7 @@
 <mapper namespace="edu.hdu.mapper.RoleMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into role (role_name, permission)
-        VALUES (#{roleName}, #{permission})
+        insert into role (role_name, permission, create_user, create_time, update_user, update_time)
+        VALUES (#{roleName},#{permission},#{createUser},#{createTime},#{updateUser},#{updateTime})
     </insert>
 </mapper>
